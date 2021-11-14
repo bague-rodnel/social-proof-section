@@ -1,0 +1,297 @@
+@use "sass:math";
+
+@function fluid($min, $max, $minvw: 375px, $maxvw: 1440px) {
+  @return calc(
+    #{$min} + (#{math.div($max - $min, 1px)}) * ((100vw - #{$minvw}) /
+          (#{math.div($maxvw - $minvw, 1px)}))
+  );
+}
+
+@mixin flex-mid {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+$color-magenta-vd: hsl(300, 43%, 22%);
+$color-pink: hsl(333, 80%, 67%);
+$color-magenta-grayish-d: hsl(303, 10%, 53%);
+$color-magenta-grayish-l: hsl(300, 24%, 96%);
+$color-white: hsl(0, 0%, 100%);
+$font-wt-reg: 400;
+$font-wt-semib: 500;
+$font-wt-bold: 700;
+
+*,
+::before,
+::after {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-family: "Spartan", sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+body {
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.container {
+  padding-left: 24px;
+  padding-right: 24px;
+  margin: 0 auto;
+}
+
+.card,
+.badge {
+  border-radius: 0.5rem;
+}
+
+.social-proof {
+  width: 100%;
+  background-color: $color-white;
+  background-image: url(../images/bg-pattern-top-mobile.svg),
+    url(../images/bg-pattern-bottom-mobile.svg);
+  background-position: left top, right bottom;
+  background-size: 100%, 100%;
+  background-repeat: no-repeat;
+
+  padding-top: fluid(80px, 120px);
+  padding-bottom: 100px;
+  text-align: center;
+
+  .heading {
+    color: $color-magenta-vd;
+    font-weight: $font-wt-bold;
+    font-size: fluid(30px, 44px);
+    line-height: 1;
+    margin-bottom: 23px;
+  }
+
+  .text {
+    margin-bottom: 42px;
+    color: $color-magenta-grayish-d;
+    font-weight: $font-wt-semib;
+    font-size: 14px;
+    line-height: 2;
+  }
+
+  .badges {
+    margin-bottom: 49px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    .badge {
+      background-color: $color-magenta-grayish-l;
+
+      padding: 14px 0;
+
+      .star {
+        display: inline-block;
+        width: 22px;
+      }
+
+      .caption {
+        margin-top: 8px;
+        color: $color-magenta-vd;
+        font-weight: $font-wt-bold;
+        font-size: 13px;
+      }
+    }
+  }
+
+  .testimonials {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    .card {
+      background-color: $color-magenta-vd;
+      padding: 36px 32px 32px;
+      text-align: left;
+      font-size: 12.5px;
+      color: $color-magenta-grayish-l;
+
+      .header {
+        margin-bottom: 28px;
+
+        display: flex;
+        gap: 22px;
+        align-items: stretch;
+
+        img {
+          width: 42px;
+          height: 42px;
+          border-radius: 50%;
+        }
+
+        .identity {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-evenly;
+
+          .name {
+            font-weight: $font-wt-bold;
+          }
+
+          .status {
+            color: $color-pink;
+          }
+        }
+      }
+
+      .quote {
+        font-weight: $font-wt-semib;
+        line-height: 1.6;
+      }
+    }
+  }
+}
+
+@media (min-width: 576px) {
+  .social-proof {
+    background-size: auto, auto;
+    .badges {
+      align-items: center;
+
+      .badge {
+        min-width: 66%;
+
+        &:first-child {
+          align-self: flex-start;
+        }
+
+        &:last-child {
+          align-self: flex-end;
+        }
+      }
+    }
+
+    .testimonials {
+      align-items: center;
+
+      .card {
+        flex: 1;
+        max-width: 70%;
+
+        &:nth-child(odd) {
+          align-self: flex-start;
+        }
+
+        &:nth-child(even) {
+          align-self: flex-end;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .social-proof {
+    background-image: url(../images/bg-pattern-top-desktop.svg),
+      url(../images/bg-pattern-bottom-desktop.svg);
+    .container {
+      max-width: 720px;
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    .testimonials {
+      .card {
+        max-width: 62%;
+      }
+    }
+  }
+}
+
+@media (min-width: 1200px) {
+  .social-proof {
+    .container {
+      max-width: 980px;
+
+      display: flex;
+      flex-wrap: wrap;
+
+      .header,
+      .badges {
+        flex: 1 50%;
+      }
+    }
+
+    .header {
+      max-width: 426px;
+      text-align: left;
+
+      .text {
+        margin-bottom: 1rem;
+      }
+    }
+
+    .badges {
+      max-width: 540px;
+      margin-left: auto;
+      margin-bottom: 0;
+      justify-content: space-evenly;
+
+      .badge {
+        min-width: 80%;
+        @include flex-mid();
+        gap: 1.5rem;
+
+        .stars,
+        .stars img {
+          @include flex-mid();
+        }
+      }
+    }
+
+    .testimonials {
+      min-height: 266px;
+      margin-top: 60px;
+
+      flex-direction: row;
+      gap: 30px;
+
+      .card {
+        &:first-child {
+          align-self: flex-start !important;
+        }
+
+        &:nth-child(2) {
+          align-self: center !important;
+        }
+
+        &:last-child {
+          align-self: flex-end !important;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 1200px) {
+  .social-proof {
+    .container {
+      max-width: 1110px;
+    }
+  }
+}
+
+.attribution {
+  font-size: 11px;
+  text-align: center;
+}
+.attribution a {
+  color: hsl(228, 45%, 44%);
+}
